@@ -38,6 +38,15 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        //very SIMPLE(like 3d AI) animation something that we need now(no)
+        if (HorizontalMove > 0)
+        {
+            animator.SetFloat("Speed", HorizontalMove);
+        } else
+        {
+            animator.SetFloat("Speed", HorizontalMove * -1);
+        }
+
         //checking ground
         isGrounded = Physics2D.OverlapCircle(groundChecker.position, checkerRadius, groundLayer);
 
