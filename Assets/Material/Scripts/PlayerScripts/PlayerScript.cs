@@ -25,6 +25,9 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float timeBeforeSkill;
     [SerializeField] float skillCD = 5f;
 
+    //i dont know why it here NOW but i think we need it(no)
+    [SerializeField] Animator animator;
+
     void Start()
     {
         //getting Rigidbody2D
