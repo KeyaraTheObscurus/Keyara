@@ -12,9 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MenuScene.unity
     guid: 54af9b666db889f4591d84197b2bc7b0
   - enabled: 1
-    path: Assets/Scenes/idk/GameScene.unity
+    path: Assets/Scenes/Area 2/Zone_B1.unity
     guid: c0c01d02fbb3e0944bc30e7bf54025bc
   - enabled: 1
-    path: Assets/Scenes/CaesarArena.unity
+    path: Assets/Scenes/Area 1/Zone_A1.unity
     guid: 592647fc3ec36f2459e59c4a8536b866
   m_configObjects: {}
