@@ -32,9 +32,10 @@ public class PlayerScript : MonoBehaviour
     //it`s animator
     private Animator animator;
 
-    //stop movement in cutscene
-    [SerializeField] float startCutsceneTime = 6.00f;
-    [SerializeField] float alredyPlayed = 0;
+    [SerializeField] bool isGrounded = false;
+    [SerializeField] LayerMask groundLayer;
+
+    [SerializeField] float multiJumpTimes = 2f;
 
 
     void Start()
@@ -66,25 +67,11 @@ public class PlayerScript : MonoBehaviour
             animator.SetFloat("Speed", HorizontalMove * -1);
         }
 
-        if(alredyPlayed >= startCutsceneTime)
-        {
-            speed = 1f;
-            jumpForce = 4f;
-        } else
-        {
-            speed = 0;
-            jumpForce = 0;
-            alredyPlayed += Time.deltaTime;
-        }
-
         //checking ground
-        //isGrounded = Physics2D.OverlapCircle(groundChecker.position, checkerRadius, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundChecker.position, checkerRadius, groundLayer);
 
         //Max Jumps -Xeno
-        if(HasJumps >= 3f) 
-        {
-            HasJumps = HasJumps - 1f;    
-        }
+        
 
         //getting direction with speed
         HorizontalMove = Input.GetAxisRaw("Horizontal") * speed;
@@ -97,13 +84,26 @@ public class PlayerScript : MonoBehaviour
         {
             FlipX();
         }
-        
+
         //jump
-        if(Input.GetAxis("Vertical") >= 1f)
+
+        if (HasJumps < multiJumpTimes)
         {
-            rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
-            HasJumps = HasJumps - 1f;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
+                HasJumps = HasJumps + 1f;
+            }
         }
+
+        if(HasJumps == multiJumpTimes)
+        {
+            if(isGrounded)
+            {
+                HasJumps = 0;
+            }
+        }
+        
         if (timeBeforeSkill >= skillCD)
         {
             if (Input.GetKeyDown(KeyCode.Q))
@@ -113,7 +113,7 @@ public class PlayerScript : MonoBehaviour
                 FlipY();
             }
         }
-        else 
+        else
         {
             timeBeforeSkill += Time.deltaTime;
         }
