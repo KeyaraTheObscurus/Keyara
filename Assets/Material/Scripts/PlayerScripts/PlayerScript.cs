@@ -109,25 +109,27 @@ public class PlayerScript : MonoBehaviour
         
         if (timeBeforeSkill >= skillCD)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetButton("q"))
             {
-                rb.gravityScale *= -1;
+                rb.gravityScale *= -rb.gravityScale;
                 timeBeforeSkill = 0;
                 FlipY();
             }
         }
         else
         {
+            rb.gravityScale *= -rb.gravityScale;
+            FlipY();
             timeBeforeSkill += Time.deltaTime;
         }
     }
 
     private void Jump()
-    {
+    {  
         if (HasJumps >= 1f)
         {
+            HasJumps -= 1f;
             rb.AddForce(transform.up * JumpForce * JumpGrav, ForceMode2D.Impulse);
-            HasJumps = HasJumps - 1f;
             isGrounded = false;
         }
     }    
