@@ -38,6 +38,11 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        //Scene Reload with "R"
+        if(Input.GetKeyDown(KeyCode.R)){
+        Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+        }
+
         //very SIMPLE(like 3d AI) animation something that we need now(no)
         if (HorizontalMove > 0)
         {
@@ -126,7 +131,7 @@ public class PlayerScript : MonoBehaviour
     {
         if(collsion.tag == "Light")
         {
-            SceneManager.LoadScene("SampleScene");
+           Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
         }
     }
 }
