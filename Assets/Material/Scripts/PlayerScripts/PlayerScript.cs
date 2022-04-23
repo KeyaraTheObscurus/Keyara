@@ -22,8 +22,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float checkerRadius = 0.5f;
 
     //Number of jumps to start with. -Xeno
-    [SerializeField] float HasJumps = 2f;
-
+    [SerializeField] float HasJumps = 1f;
 
     //gravitation skill variables
     [SerializeField] float timeBeforeSkill;
@@ -35,13 +34,10 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] bool isGrounded = false;
     [SerializeField] LayerMask groundLayer;
 
-    [SerializeField] float multiJumpTimes = 2f;
 
 
     void Start()
     {
-//        float JumpKey = Input.GetAxis("Vertical");
-        
         //getting Rigidbody2D
         rb = GetComponent<Rigidbody2D>();
 
@@ -85,23 +81,27 @@ public class PlayerScript : MonoBehaviour
             FlipX();
         }
 
-        //jump
-
-        if (HasJumps < multiJumpTimes)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
-                HasJumps = HasJumps + 1f;
-            }
-        }
-
-        if(HasJumps == multiJumpTimes)
+        if(HasJumps <= 0)
         {
             if(isGrounded)
             {
-                HasJumps = 0;
+                HasJumps = 1f;
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            Jump();
+        }
+
+        if(Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Jump();
+        }
+        
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
         }
         
         if (timeBeforeSkill >= skillCD)
@@ -118,6 +118,15 @@ public class PlayerScript : MonoBehaviour
             timeBeforeSkill += Time.deltaTime;
         }
     }
+
+    private void Jump()
+    {
+        if (HasJumps >= 1f)
+        {
+            rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
+            HasJumps = HasJumps - 1f; 
+        }
+    }    
 
     private void FixedUpdate()
     {
