@@ -68,7 +68,7 @@ public class PlayerScript : MonoBehaviour
         }
         
         //jump
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("w") && isGrounded)
         {
              rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
         }
