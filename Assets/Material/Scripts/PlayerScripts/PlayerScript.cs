@@ -25,13 +25,20 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float timeBeforeSkill;
     [SerializeField] float skillCD = 5f;
 
-    //i dont know why it here NOW but i think we need it(no)
-    [SerializeField] Animator animator;
+    //it`s animator
+    private Animator animator;
+
+    //stop movement in cutscene
+    [SerializeField] float startCutsceneTime = 6.00f;
+    [SerializeField] float alredyPlayed = 0;
 
     void Start()
     {
         //getting Rigidbody2D
         rb = GetComponent<Rigidbody2D>();
+
+        //getting animator
+        animator = GetComponent<Animator>();
 
         timeBeforeSkill = skillCD;
     }
@@ -45,6 +52,17 @@ public class PlayerScript : MonoBehaviour
         } else
         {
             animator.SetFloat("Speed", HorizontalMove * -1);
+        }
+
+        if(alredyPlayed >= startCutsceneTime)
+        {
+            speed = 1f;
+            jumpForce = 4f;
+        } else
+        {
+            speed = 0;
+            jumpForce = 0;
+            alredyPlayed += Time.deltaTime;
         }
 
         //checking ground
