@@ -35,7 +35,7 @@ public class PlayerScript : MonoBehaviour
 
     void Start()
     {
-//        float JumpKey = Input.GetAxis("Vertical");
+        //float JumpKey = Input.GetAxis("Vertical");
         
         //getting Rigidbody2D
         rb = GetComponent<Rigidbody2D>();
@@ -79,8 +79,9 @@ public class PlayerScript : MonoBehaviour
         {
             FlipX();
         }
-        
-        //jump
+    }
+
+    private void JUMP WHEN I PRESS BUTTON
         if(Input.GetAxis("Vertical") >= 1f)
         {
             rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
