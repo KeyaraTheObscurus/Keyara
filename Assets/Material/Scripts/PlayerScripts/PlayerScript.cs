@@ -29,16 +29,24 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float timeBeforeSkill;
     [SerializeField] float skillCD = 5f;
 
-    //i dont know why it here NOW but i think we need it(no)
-    [SerializeField] Animator animator;
+    //it`s animator
+    private Animator animator;
+
+    [SerializeField] bool isGrounded = false;
+    [SerializeField] LayerMask groundLayer;
+
+    [SerializeField] float multiJumpTimes = 2f;
 
 
     void Start()
     {
-        //float JumpKey = Input.GetAxis("Vertical");
+//        float JumpKey = Input.GetAxis("Vertical");
         
         //getting Rigidbody2D
         rb = GetComponent<Rigidbody2D>();
+
+        //getting animator
+        animator = GetComponent<Animator>();
 
         timeBeforeSkill = skillCD;
     }
@@ -60,13 +68,10 @@ public class PlayerScript : MonoBehaviour
         }
 
         //checking ground
-        //isGrounded = Physics2D.OverlapCircle(groundChecker.position, checkerRadius, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundChecker.position, checkerRadius, groundLayer);
 
         //Max Jumps -Xeno
-        if(HasJumps >= 3f) 
-        {
-            HasJumps = HasJumps - 1f;    
-        }
+        
 
         //getting direction with speed
         HorizontalMove = Input.GetAxisRaw("Horizontal") * speed;
@@ -79,14 +84,26 @@ public class PlayerScript : MonoBehaviour
         {
             FlipX();
         }
-    }
 
-    private void JUMP WHEN I PRESS BUTTON
-        if(Input.GetAxis("Vertical") >= 1f)
+        //jump
+
+        if (HasJumps < multiJumpTimes)
         {
-            rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
-            HasJumps = HasJumps - 1f;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
+                HasJumps = HasJumps + 1f;
+            }
         }
+
+        if(HasJumps == multiJumpTimes)
+        {
+            if(isGrounded)
+            {
+                HasJumps = 0;
+            }
+        }
+        
         if (timeBeforeSkill >= skillCD)
         {
             if (Input.GetKeyDown(KeyCode.Q))
@@ -96,7 +113,7 @@ public class PlayerScript : MonoBehaviour
                 FlipY();
             }
         }
-        else 
+        else
         {
             timeBeforeSkill += Time.deltaTime;
         }
