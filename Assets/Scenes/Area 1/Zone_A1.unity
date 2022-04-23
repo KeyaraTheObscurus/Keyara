@@ -627,8 +627,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5198824026916153136, guid: e99d74eef54c9234c843a204c69d02cd, type: 3}
+      propertyPath: m_Mass
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5198824026916153136, guid: e99d74eef54c9234c843a204c69d02cd, type: 3}
+      propertyPath: m_UseAutoMass
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5198824026916153136, guid: e99d74eef54c9234c843a204c69d02cd, type: 3}
       propertyPath: m_GravityScale
-      value: 3
+      value: 4.25
       objectReference: {fileID: 0}
     - target: {fileID: 5198824026916153150, guid: e99d74eef54c9234c843a204c69d02cd, type: 3}
       propertyPath: Speed
@@ -644,7 +652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198824026916153150, guid: e99d74eef54c9234c843a204c69d02cd, type: 3}
       propertyPath: JumpForce
-      value: 6
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5198824026916153150, guid: e99d74eef54c9234c843a204c69d02cd, type: 3}
       propertyPath: jumpForce
@@ -849,7 +857,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.8035393
+  orthographic size: 3.0790234
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -873,7 +881,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1504433768}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3823, y: -0.936, z: -10}
+  m_LocalPosition: {x: 16.47, y: -0.42, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
