@@ -20,4 +20,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Area 2/Zone_B1.unity
     guid: c0c01d02fbb3e0944bc30e7bf54025bc
+  - enabled: 1
+    path: Assets/Scenes/Area 2/Zone_B2.unity
+    guid: 1c236996b6cbb0147b10bfd95016bbd6
+  - enabled: 1
+    path: Assets/Scenes/Area 3/Zone_C1.unity
+    guid: eda5ad4ad7ad90642a158885e19f7146
+  - enabled: 1
+    path: Assets/Scenes/Area 3/Zone_C2.unity
+    guid: e74cf7e18f53d9344b40fa7cfcd93117
   m_configObjects: {}
