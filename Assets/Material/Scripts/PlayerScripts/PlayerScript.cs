@@ -15,11 +15,15 @@ public class PlayerScript : MonoBehaviour
     //this variable responsible for direction
     [SerializeField] bool facingRight = true;
 
-    //ground checking variables
-    [SerializeField] bool isGrounded = false;
+    //ground checking variables  (Only Commenting this for now because we might use it later, but wanted the ability to "Mid-Air Jump")
+    // [SerializeField] bool isGrounded = false;
+    // [SerializeField] LayerMask groundLayer;
     [SerializeField] Transform groundChecker;
     [SerializeField] float checkerRadius = 0.5f;
-    [SerializeField] LayerMask groundLayer;
+
+    //Number of jumps to start with. -Xeno
+    [SerializeField] float HasJumps = 2f;
+
 
     //gravitation skill variables
     [SerializeField] float timeBeforeSkill;
@@ -28,8 +32,11 @@ public class PlayerScript : MonoBehaviour
     //i dont know why it here NOW but i think we need it(no)
     [SerializeField] Animator animator;
 
+
     void Start()
     {
+//        float JumpKey = Input.GetAxis("Vertical");
+        
         //getting Rigidbody2D
         rb = GetComponent<Rigidbody2D>();
 
@@ -53,7 +60,13 @@ public class PlayerScript : MonoBehaviour
         }
 
         //checking ground
-        isGrounded = Physics2D.OverlapCircle(groundChecker.position, checkerRadius, groundLayer);
+        //isGrounded = Physics2D.OverlapCircle(groundChecker.position, checkerRadius, groundLayer);
+
+        //Max Jumps -Xeno
+        if(HasJumps >= 3f) 
+        {
+            HasJumps = HasJumps - 1f;    
+        }
 
         //getting direction with speed
         HorizontalMove = Input.GetAxisRaw("Horizontal") * speed;
@@ -68,9 +81,10 @@ public class PlayerScript : MonoBehaviour
         }
         
         //jump
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("w") && isGrounded)
+        if(Input.GetAxis("Vertical") >= 1f)
         {
-             rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
+            rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
+            HasJumps = HasJumps - 1f;
         }
         if (timeBeforeSkill >= skillCD)
         {
@@ -126,10 +140,10 @@ public class PlayerScript : MonoBehaviour
     }
 
 
-    //if touching light
+    //if touching light (Added generic trigger name for other reset triggers -Xeno)
     private void OnTriggerEnter2D(Collider2D collsion)
     {
-        if(collsion.tag == "Light")
+        if(collsion.tag == "ResetTrig")
         {
            Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
         }
