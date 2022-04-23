@@ -8,9 +8,10 @@ public class PlayerScript : MonoBehaviour
 
     //movement and physic variables
     private Rigidbody2D rb;
-    [SerializeField] float speed = 1f;
-    [SerializeField] float jumpForce = 6f;
+    [SerializeField] float Speed;
+    [SerializeField] float JumpForce;
     [SerializeField] float HorizontalMove;
+    [SerializeField] float JumpGrav;
 
     //this variable responsible for direction
     [SerializeField] bool facingRight = true;
@@ -22,7 +23,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float checkerRadius = 0.5f;
 
     //Number of jumps to start with. -Xeno
-    [SerializeField] float HasJumps = 1f;
+    [SerializeField] float HasJumps;
 
     //gravitation skill variables
     [SerializeField] float timeBeforeSkill;
@@ -70,7 +71,7 @@ public class PlayerScript : MonoBehaviour
         
 
         //getting direction with speed
-        HorizontalMove = Input.GetAxisRaw("Horizontal") * speed;
+        HorizontalMove = Input.GetAxisRaw("Horizontal") * Speed;
 
         //turning player
         if(HorizontalMove < 0 && facingRight)
@@ -89,20 +90,22 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
+
         if(Input.GetKeyDown(KeyCode.W))
         {
             Jump();
         }
-
+        else
         if(Input.GetKeyDown(KeyCode.UpArrow))
         {
             Jump();
         }
-        
+        else
         if(Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
+        
         
         if (timeBeforeSkill >= skillCD)
         {
@@ -123,8 +126,9 @@ public class PlayerScript : MonoBehaviour
     {
         if (HasJumps >= 1f)
         {
-            rb.AddForce(transform.up * jumpForce * rb.gravityScale, ForceMode2D.Impulse);
-            HasJumps = HasJumps - 1f; 
+            rb.AddForce(transform.up * JumpForce * JumpGrav, ForceMode2D.Impulse);
+            HasJumps = HasJumps - 1f;
+            isGrounded = false;
         }
     }    
 
