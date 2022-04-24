@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,13 +14,15 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float JumpForce;
     [SerializeField] float HorizontalMove;
     [SerializeField] float JumpGrav;
+    [SerializeField] AudioSource audioSource01;
+    [SerializeField] bool IsMoving;
 
     //this variable responsible for direction
     [SerializeField] bool facingRight = true;
 
-    //ground checking variables  (Only Commenting this for now because we might use it later, but wanted the ability to "Mid-Air Jump")
-    // [SerializeField] bool isGrounded = false;
-    // [SerializeField] LayerMask groundLayer;
+    //ground checking variables
+    [SerializeField] bool isGrounded = true;
+    [SerializeField] LayerMask groundLayer;
     [SerializeField] Transform groundChecker;
     [SerializeField] float checkerRadius = 0.5f;
 
@@ -32,13 +36,14 @@ public class PlayerScript : MonoBehaviour
     //it`s animator
     private Animator animator;
 
-    [SerializeField] bool isGrounded = false;
-    [SerializeField] LayerMask groundLayer;
 
 
 
     void Start()
     {
+
+        audioSource01 = GetComponent<AudioSource>();
+
         //getting Rigidbody2D
         rb = GetComponent<Rigidbody2D>();
 
@@ -48,10 +53,13 @@ public class PlayerScript : MonoBehaviour
         timeBeforeSkill = skillCD;
     }
 
-    void Update()
+    void LateUpdate()
     {
+        if (!IsMoving) audioSource01.Stop();
+        if (!isGrounded) audioSource01.Stop();
         //Scene Reload with "R"
-        if(Input.GetKeyDown("r")){
+        if(Input.GetKeyDown(KeyCode.R))
+        {
         Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
         }
 
@@ -59,7 +67,8 @@ public class PlayerScript : MonoBehaviour
         if (HorizontalMove > 0)
         {
             animator.SetFloat("Speed", HorizontalMove);
-        } else
+        } 
+        else
         {
             animator.SetFloat("Speed", HorizontalMove * -1);
         }
@@ -67,8 +76,8 @@ public class PlayerScript : MonoBehaviour
         //checking ground
         isGrounded = Physics2D.OverlapCircle(groundChecker.position, checkerRadius, groundLayer);
 
-        //Max Jumps -Xeno
-        
+        if (Input.GetAxis("Horizontal") != 0) IsMoving = true;
+        else IsMoving = false;
 
         //getting direction with speed
         HorizontalMove = Input.GetAxisRaw("Horizontal") * Speed;
@@ -107,21 +116,20 @@ public class PlayerScript : MonoBehaviour
         }
         
         
-        if (timeBeforeSkill >= skillCD)
-        {
-            if (Input.GetButton("q"))
-            {
-                rb.gravityScale *= -rb.gravityScale;
-                timeBeforeSkill = 0;
-                FlipY();
-            }
-        }
-        else
-        {
-            rb.gravityScale *= -1;
-            FlipY();
-            timeBeforeSkill += Time.deltaTime;
-        }
+        // if (timeBeforeSkill >= skillCD)
+        // {
+        //     if (Input.GetButton(KeyCode.Q))
+        //     {
+        //         rb.gravityScale *= -rb.gravityScale;
+        //         timeBeforeSkill = 0;
+        //         FlipY();
+        //     }
+        // }
+        // else
+        // {
+        //     FlipY();
+        //     timeBeforeSkill += Time.deltaTime;
+        // }
     }
 
     private void Jump()
@@ -136,6 +144,7 @@ public class PlayerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (IsMoving && isGrounded && !audioSource01.isPlaying) audioSource01.Play();
         //moveing character
         Vector2 targetVelocity = new Vector2(HorizontalMove * 5, rb.velocity.y);
         rb.velocity = targetVelocity;

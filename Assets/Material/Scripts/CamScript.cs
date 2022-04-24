@@ -11,7 +11,7 @@ public class CamScript : MonoBehaviour
   
   void Update () 
   {
-        control.transform.position = new Vector3 (player.position.x, player.position.y, offset.z);
-        cameraMain.transform.position = new Vector3 (player.position.x + offset.x, player.position.y + offset.y, offset.z);
+    control.transform.position = new Vector3 (player.position.x, player.position.y, offset.z);
+    cameraMain.transform.position = new Vector3 (player.position.x + offset.x, player.position.y + offset.y, offset.z);
   }
 }
