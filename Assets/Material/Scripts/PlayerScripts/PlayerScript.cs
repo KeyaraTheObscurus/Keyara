@@ -36,13 +36,13 @@ public class PlayerScript : MonoBehaviour
     //it`s animator
     private Animator animator;
 
+    [SerializeField] bool InCave = false;
+
 
 
 
     void Start()
     {
-        transform.position = new Vector3(PlayerPrefs.GetFloat("position.x"), PlayerPrefs.GetFloat("position.y"), 
-        PlayerPrefs.GetFloat("position.z"));
 
         audioSource01 = GetComponent<AudioSource>();
 
@@ -53,6 +53,8 @@ public class PlayerScript : MonoBehaviour
         animator = GetComponent<Animator>();
 
         timeBeforeSkill = skillCD;
+
+        transform.position = new Vector3(PlayerPrefs.GetFloat("position.x"), PlayerPrefs.GetFloat("position.y"), PlayerPrefs.GetFloat("position.z"));
     }
 
     void LateUpdate()
@@ -60,16 +62,16 @@ public class PlayerScript : MonoBehaviour
         if (!IsMoving) audioSource01.Stop();
         if (!isGrounded) audioSource01.Stop();
         //Scene Reload with "R"
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-        Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+            Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
         }
 
         //very SIMPLE(like 3d AI) animation something that we need now(no)
         if (HorizontalMove > 0)
         {
             animator.SetFloat("Speed", HorizontalMove);
-        } 
+        }
         else
         {
             animator.SetFloat("Speed", HorizontalMove * -1);
@@ -85,39 +87,45 @@ public class PlayerScript : MonoBehaviour
         HorizontalMove = Input.GetAxisRaw("Horizontal") * Speed;
 
         //turning player
-        if(HorizontalMove < 0 && facingRight)
+        if (HorizontalMove < 0 && facingRight)
         {
             FlipX();
-        } else if(HorizontalMove > 0 && !facingRight)
+        }
+        else if (HorizontalMove > 0 && !facingRight)
         {
             FlipX();
         }
 
-        if(HasJumps <= 0)
+        if (HasJumps <= 0)
         {
-            if(isGrounded)
+            if (isGrounded)
             {
                 HasJumps = 1f;
             }
         }
 
 
-        if(Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             Jump();
         }
         else
-        if(Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Jump();
         }
         else
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
-        
-        
+
+        if (transform.position.y < 0 && !InCave)
+        {
+            FlipY();
+            rb.gravityScale *= -1;
+        }
+
         // if (timeBeforeSkill >= skillCD)
         // {
         //     if (Input.GetButton(KeyCode.Q))
@@ -135,14 +143,22 @@ public class PlayerScript : MonoBehaviour
     }
 
     private void Jump()
-    {  
+    {
         if (HasJumps >= 1f)
         {
-            HasJumps -= 1f;
-            rb.AddForce(transform.up * JumpForce * JumpGrav, ForceMode2D.Impulse);
-            isGrounded = false;
+            if (!InCave)
+            {
+                HasJumps -= 1f;
+                rb.AddForce(transform.up * JumpForce * JumpGrav, ForceMode2D.Impulse);
+                isGrounded = false;
+            }
+            else
+            {
+                rb.gravityScale *= -1;
+                FlipY();
+            }
         }
-    }    
+    }
 
     private void FixedUpdate()
     {
@@ -187,9 +203,21 @@ public class PlayerScript : MonoBehaviour
     //if touching light (Added generic trigger name for other reset triggers -Xeno)
     private void OnTriggerEnter2D(Collider2D collsion)
     {
-        if(collsion.tag == "ResetTrig")
+        if (collsion.tag == "ResetTrig")
         {
-           Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+            Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+        }
+        if (collsion.tag == "Cave")
+        {
+            InCave = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Cave")
+        {
+            InCave = false;
         }
     }
 }
