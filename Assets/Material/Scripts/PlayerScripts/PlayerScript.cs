@@ -51,7 +51,7 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         //Scene Reload with "R"
-        if(Input.GetKeyDown(KeyCode.R)){
+        if(Input.GetKeyDown("r")){
         Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
         }
 
@@ -118,7 +118,7 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
-            rb.gravityScale *= -rb.gravityScale;
+            rb.gravityScale *= -1;
             FlipY();
             timeBeforeSkill += Time.deltaTime;
         }
