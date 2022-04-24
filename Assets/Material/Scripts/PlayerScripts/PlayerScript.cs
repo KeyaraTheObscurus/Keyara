@@ -41,6 +41,8 @@ public class PlayerScript : MonoBehaviour
 
     void Start()
     {
+        transform.position = new Vector3(PlayerPrefs.GetFloat("position.x"), PlayerPrefs.GetFloat("position.y"), 
+        PlayerPrefs.GetFloat("position.z"));
 
         audioSource01 = GetComponent<AudioSource>();
 
