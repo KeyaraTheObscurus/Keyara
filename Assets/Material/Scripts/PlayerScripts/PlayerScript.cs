@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     //movement and physic variables
     private Rigidbody2D rb;
     [SerializeField] float Speed;
+    [SerializeField] float negGravity;
     [SerializeField] float JumpForce;
     [SerializeField] float HorizontalMove;
     [SerializeField] float JumpGrav;
@@ -120,17 +121,17 @@ public class PlayerScript : MonoBehaviour
             Jump();
         }
 
-        if (transform.position.y < 0 && !InCave)
-        {
-            FlipY();
-            rb.gravityScale *= -1;
-        }
+        // if (transform.position.y < 0 && !InCave)
+        // {
+        //     FlipY();
+        //     rb.gravityScale *= -1;
+        // }
 
         // if (timeBeforeSkill >= skillCD)
         // {
-        //     if (Input.GetButton(KeyCode.Q))
+        //     if (Input.GetKeyDown(KeyCode.Q))
         //     {
-        //         rb.gravityScale *= -rb.gravityScale;
+        //         rb.gravityScale *= negGravity;
         //         timeBeforeSkill = 0;
         //         FlipY();
         //     }
