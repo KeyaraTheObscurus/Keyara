@@ -14,9 +14,8 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float negGravity;
     [SerializeField] float JumpForce;
     [SerializeField] float HorizontalMove;
-    [SerializeField] float JumpGrav;
+//    [SerializeField] float JumpGrav;
     [SerializeField] AudioSource audioSource01;
-    [SerializeField] bool IsMoving;
 
     //this variable responsible for direction
     [SerializeField] bool facingRight = true;
@@ -61,8 +60,6 @@ public class PlayerScript : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!IsMoving) audioSource01.Stop();
-        if (!isGrounded) audioSource01.Stop();
         //Scene Reload with "R"
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -81,9 +78,6 @@ public class PlayerScript : MonoBehaviour
 
         //checking ground
         isGrounded = Physics2D.OverlapCircle(groundChecker.position, checkerRadius, groundLayer);
-
-        if (Input.GetAxis("Horizontal") != 0) IsMoving = true;
-        else IsMoving = false;
 
         //getting direction with speed
         HorizontalMove = Input.GetAxisRaw("Horizontal") * Speed;
@@ -107,19 +101,28 @@ public class PlayerScript : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if ((Input.GetKeyDown(KeyCode.W) && !(Input.GetKeyDown(KeyCode.UpArrow) && !(Input.GetKeyDown(KeyCode.Space)))))
         {
-            Jump();
+            if (HasJumps >= 1f)
+            {
+                Jump();
+            }
         }
         else
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if ((Input.GetKeyDown(KeyCode.UpArrow) && !(Input.GetKeyDown(KeyCode.W) && !(Input.GetKeyDown(KeyCode.Space)))))
         {
-            Jump();
+            if (HasJumps >= 1f)
+            {
+                Jump();
+            }
         }
         else
-        if (Input.GetKeyDown(KeyCode.Space))
+        if ((Input.GetKeyDown(KeyCode.Space) && !(Input.GetKeyDown(KeyCode.W) && !(Input.GetKeyDown(KeyCode.UpArrow)))))
         {
-            Jump();
+            if (HasJumps >= 1f)
+            {
+                Jump();
+            }
         }
 
         // if (transform.position.y < 0 && !InCave)
@@ -146,25 +149,22 @@ public class PlayerScript : MonoBehaviour
 
     private void Jump()
     {
-        if (HasJumps >= 1f)
-        {
-            if (!InCave)
+            // if (!InCave)
             {
                 HasJumps -= 1f;
-                rb.AddForce(transform.up * JumpForce * JumpGrav, ForceMode2D.Impulse);
+                rb.AddForce(transform.up * (JumpForce + rb.gravityScale), ForceMode2D.Impulse);
                 isGrounded = false;
             }
-            else
-            {
-                rb.gravityScale *= -1;
-                FlipY();
-            }
-        }
+            // else
+            // {
+            //     rb.gravityScale *= -1;
+            //     FlipY();
+            // }
     }
 
     private void FixedUpdate()
     {
-        if (IsMoving && isGrounded && !audioSource01.isPlaying) audioSource01.Play();
+        if ((Input.GetAxis("Horizontal") != 0) && isGrounded && !audioSource01.isPlaying) audioSource01.Play();
         //moveing character
         Vector2 targetVelocity = new Vector2(HorizontalMove * 5, rb.velocity.y);
         rb.velocity = targetVelocity;
@@ -220,6 +220,20 @@ public class PlayerScript : MonoBehaviour
         if (collision.tag == "Cave")
         {
             InCave = false;
+        }
+    }
+
+    void Update()
+    {
+        if ((Input.GetAxis("Horizontal") == 0f))
+            {
+                audioSource01.Stop();
+            }
+            if (!isGrounded) audioSource01.Stop();
+
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
         }
     }
 }
