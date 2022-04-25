@@ -1147,7 +1147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7756974736960219401}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.719, y: -0.89, z: 0}
+  m_LocalPosition: {x: 0.42, y: -0.98, z: 1.133}
   m_LocalScale: {x: 1.1315, y: 1.1559, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1222,19 +1222,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 1
+  negGravity: 0
   JumpForce: 10
   HorizontalMove: 0
   JumpGrav: 1
+  audioSource01: {fileID: 0}
+  IsMoving: 0
   facingRight: 1
+  isGrounded: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 55
   groundChecker: {fileID: 6506717762241733413}
   checkerRadius: 0.12
   HasJumps: 1
   timeBeforeSkill: 0
   skillCD: 5
-  isGrounded: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 55
+  InCave: 0
 --- !u!61 &5198824026916153137
 BoxCollider2D:
   m_ObjectHideFlags: 0

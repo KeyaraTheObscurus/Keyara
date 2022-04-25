@@ -56,6 +56,7 @@ public class PlayerScript : MonoBehaviour
         timeBeforeSkill = skillCD;
 
         transform.position = new Vector3(PlayerPrefs.GetFloat("position.x"), PlayerPrefs.GetFloat("position.y"), PlayerPrefs.GetFloat("position.z"));
+        transform.position = new Vector3(0.42f, -0.98f, 1.13f);
     }
 
     void LateUpdate()
