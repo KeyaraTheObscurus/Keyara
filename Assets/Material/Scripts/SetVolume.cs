@@ -19,7 +19,6 @@ public class SetVolume : MonoBehaviour {
             Master.SetFloat ("MasterVolume", -80f);
             print ("Mute");
         }
-
             if (Input.GetKeyDown("]"))
         {
             Master.SetFloat ("MasterVolume", 0.0f);
